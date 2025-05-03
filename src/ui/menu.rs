@@ -13,12 +13,7 @@ pub fn show(app: &mut CloisterApp, ui: &mut Ui) {
                 app.active_tab = app.tabs.len() - 1;
                 ui.close_menu();
             }
-            
-            if ui.button("New Tab").clicked() {
-                app.tabs.push(Tab::new("New cloistered file"));
-                app.active_tab = app.tabs.len() - 1;
-                ui.close_menu();
-            }
+ 
             
             if ui.button("Open...").clicked() {
                 if let Some(path) = rfd::FileDialog::new()
@@ -81,7 +76,7 @@ pub fn show(app: &mut CloisterApp, ui: &mut Ui) {
                 ui.close_menu();
             }
             
-            ui.separator();
+            // ui.separator();
             
             if !app.recent_files.is_empty() {
                 ui.menu_button("Recent Files", |ui| {
@@ -114,6 +109,13 @@ pub fn show(app: &mut CloisterApp, ui: &mut Ui) {
 
         // Edit menu
         ui.menu_button("Edit", |ui| {
+            let style = ui.style_mut();
+            style.visuals.widgets.inactive.bg_fill = egui::Color32::from_rgb_additive(240, 240, 240);
+            style.visuals.widgets.hovered.bg_fill = egui::Color32::from_rgb(20, 220, 0);
+            style.visuals.widgets.active.bg_fill = egui::Color32::from_gray(200);
+            style.spacing.menu_margin = egui::Margin::same(8);
+            style.spacing.button_padding = egui::vec2(8.0, 4.0);
+
             if let Some(tab) = app.tabs.get_mut(app.active_tab) {
                 if ui.button("Undo").clicked() {
                     if let Some(prev_content) = app.undo_history.pop_back() {
@@ -175,6 +177,13 @@ pub fn show(app: &mut CloisterApp, ui: &mut Ui) {
 
         // View menu
         ui.menu_button("View", |ui| {
+            let style = ui.style_mut();
+            style.visuals.widgets.inactive.bg_fill = egui::Color32::from_rgb_additive(240, 240, 240);
+            style.visuals.widgets.hovered.bg_fill = egui::Color32::from_rgb(20, 220, 0);
+            style.visuals.widgets.active.bg_fill = egui::Color32::from_gray(200);
+            style.spacing.menu_margin = egui::Margin::same(8);
+            style.spacing.button_padding = egui::vec2(8.0, 4.0);
+
             if ui.button("Increase Font Size").clicked() {
                 app.font_size += 1.0;
                 ui.close_menu();
@@ -194,6 +203,7 @@ pub fn show(app: &mut CloisterApp, ui: &mut Ui) {
             let response = ui.selectable_label(is_active, &tab.title);
             
             // close button
+            ui.add_space(0.0);
             if ui.button("×").clicked() {
                 if tab.dirty {
                     // TODO: Show save dialog

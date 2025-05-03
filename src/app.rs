@@ -53,6 +53,15 @@ impl eframe::App for CloisterApp {
             self.show_replace = false;
         }
 
+        // some menu styling
+        let mut style = egui::Style::default();
+        style.spacing.menu_margin = egui::Margin::same(8);
+        style.spacing.button_padding = egui::vec2(8.0, 4.0);
+        style.visuals.widgets.inactive.bg_fill = egui::Color32::from_rgb_additive(240, 240, 240);
+        style.visuals.widgets.hovered.bg_fill = egui::Color32::from_rgb(20, 220, 0);
+        style.visuals.widgets.active.bg_fill = egui::Color32::from_gray(200); 
+        ctx.set_style(style);
+
         egui::TopBottomPanel::top("menu_bar").show(ctx, |ui| {
             menu::show(self, ui);
         });
